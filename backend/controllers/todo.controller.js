@@ -21,7 +21,7 @@ module.exports = {
     });
     newTask.save((err) => {
       if (err) res.json(err);
-      else res.status(201).json('tasks created');
+      else res.status(201).json(newTask);
     });
   },
   delete: (req, res) => {
