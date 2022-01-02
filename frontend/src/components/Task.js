@@ -1,20 +1,26 @@
 import React from 'react';
 
 export default function Task(props) {
-  const taskState = props.task.isCompleted;
+  const { _id, title, isCompleted } = props.task;
+
   const deleteTask = (e) => {
-    props.deleteTask(props.task._id);
+    props.deleteTask(_id);
     e.stopPropagation();
   };
+
+  const toggleTask = () => props.toggleTask(_id, !isCompleted);
+
   return (
     <div>
       <div>
-        <input type="checkbox" checked={taskState} />
+        <input
+          type="checkbox"
+          defaultChecked={isCompleted}
+          onClick={toggleTask}
+        />
         &nbsp;&nbsp;&nbsp;&nbsp;
-        <span style={{ textDecoration: taskState ? 'line-through' : '' }}>
-          Task: {props.task.title}
-          &nbsp;&nbsp;&nbsp;&nbsp; Status:
-          {props.task.isCompleted ? 'Completed' : 'not completed'}
+        <span style={{ textDecoration: isCompleted ? 'line-through' : '' }}>
+          Task: {title}
         </span>
         &nbsp;&nbsp;&nbsp;&nbsp;
         <span className="btn" onClick={deleteTask}>

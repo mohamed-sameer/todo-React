@@ -12,32 +12,63 @@ export default function Todo(props) {
       .then((response) => setTasks(response.data))
       .catch((err) => console.error(err));
   };
+
   const deleteTask = (id) => {
-    axios.delete(`http://localhost:5000/tasks/${id}`).then((response) => {
-      getTasks();
-    });
+    axios
+      .delete(`http://localhost:5000/tasks/${id}`)
+      .then((response) => getTasks())
+      .catch((err) => console.log(err));
   };
-  useEffect(() => {
-    getTasks();
-  }, []);
+
+  useEffect(() => getTasks(), []);
+
+  const toggleTask = (id, newStatus) => {
+    axios
+      .put(`http://localhost:5000/tasks/${id}/${newStatus}`)
+      .then((response) => getTasks())
+      .catch((err) => console.log(err));
+  };
 
   const addTask = (body) => {
     axios
       .post(`http://localhost:5000/tasks`, body)
-      .then(() => {
-        console.log(body);
-        getTasks();
-      })
+      .then(() => getTasks())
       .catch((err) => console.log(err));
   };
+
+  const deleteCompleted = () => {
+    axios
+      .delete('http://localhost:5000/tasks')
+      .then((response) => getTasks())
+      .catch((err) => console.log(err));
+  };
+
+  const filterTasks = (status) => {
+    axios
+      .get(`http://localhost:5000/filter?isCompleted=${status}`)
+      .then((response) => setTasks(response.data))
+      .catch((err) => console.log(err));
+  };
+
   const task = tasks.map((task, index) => {
-    return <Task key={index} task={task} deleteTask={deleteTask} />;
+    return (
+      <Task
+        key={task._id}
+        task={task}
+        deleteTask={deleteTask}
+        toggleTask={toggleTask}
+      />
+    );
   });
 
   return (
     <div>
       <h1>My Tasks</h1>
       <AddTask addTask={addTask} />
+      <button onClick={() => getTasks()}>all</button>
+      <button onClick={deleteCompleted}>delete completed</button>
+      <button onClick={() => filterTasks(true)}>completed</button>
+      <button onClick={() => filterTasks(false)}>not completed</button>
       <hr />
       {task}
     </div>

@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const URI = 'mongodb://localhost:27017/todo-react';
+const URI = 'mongodb://127.0.0.1:27017/todo-react';
 mongoose.connect(URI);
 
 const db = mongoose.connection;
