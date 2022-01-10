@@ -2,7 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const db = require('./DB/db');
-const router = require('./router/todo.route');
+const router = require('./router/index.route');
 const port = process.env.PORT || 5000;
 const app = express();
 

@@ -1,7 +1,11 @@
 const mongoose = require('mongoose');
 
-const URI = 'mongodb://127.0.0.1:27017/todo-react';
-mongoose.connect(URI);
+const URI = 'mongodb://localhost:27017/todo-react';
+const options = {
+  useNewUrlParser: true,
+  family: 4, // Use IPv4, skip trying IPv6
+};
+mongoose.connect(URI, options);
 
 const db = mongoose.connection;
 

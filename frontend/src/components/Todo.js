@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Task from './Task';
 import AddTask from './AddTask';
+import Register from './Register';
+import Login from './Login';
 
 export default function Todo(props) {
   const [tasks, setTasks] = useState([]);
@@ -45,7 +47,7 @@ export default function Todo(props) {
 
   const filterTasks = (status) => {
     axios
-      .get(`http://localhost:5000/filter?isCompleted=${status}`)
+      .get(`http://localhost:5000/tasks/filter?isCompleted=${status}`)
       .then((response) => setTasks(response.data))
       .catch((err) => console.log(err));
   };
@@ -61,6 +63,25 @@ export default function Todo(props) {
     );
   });
 
+  const registerUser = (body) => {
+    // for some reason broser cannot see this endpoint!
+    axios
+      .post('http://localhost:5000/users/register', body, {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      })
+      .then((response) => console.log(response.data))
+      .catch((err) => console.log(err));
+  };
+  const login = (body) => {
+    axios
+      .post('http://localhost:5000/users/login', body)
+      .then((response) => {
+        console.log(response.data);
+      })
+      .catch((err) => console.log(err));
+  };
+
   return (
     <div>
       <h1>My Tasks</h1>
@@ -71,6 +92,9 @@ export default function Todo(props) {
       <button onClick={() => filterTasks(false)}>not completed</button>
       <hr />
       {task}
+
+      <Register registerUser={registerUser} />
+      <Login login={login} />
     </div>
   );
 }
