@@ -4,7 +4,7 @@ module.exports = {
   index: (req, res) => {
     Todo.find({}, (err, tasks) => {
       if (err) res.json(err);
-      else res.status(201).json(tasks);
+      else res.status(200).json(tasks);
     });
   },
   filter: (req, res) => {
@@ -20,8 +20,8 @@ module.exports = {
       isCompleted: req.body.isCompleted,
     });
     newTask.save((err) => {
-      if (err) res.json(err);
-      else res.status(201).json(newTask);
+      if (err) res.status(404).json(err);
+      else res.status(202).json(newTask);
     });
   },
   delete: (req, res) => {
@@ -30,7 +30,7 @@ module.exports = {
       if (err) res.json(err);
       else
         task.deletedCount === 1
-          ? res.status(201).json('task deleted')
+          ? res.status(204).json('task deleted')
           : res.status(404).json('task not found');
     });
   },
