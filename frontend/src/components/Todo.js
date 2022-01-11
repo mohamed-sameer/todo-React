@@ -64,21 +64,16 @@ export default function Todo(props) {
   });
 
   const registerUser = (body) => {
-    // for some reason broser cannot see this endpoint!
     axios
-      .post('http://localhost:5000/users/register', body, {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      })
+      .post('http://localhost:5000/users/register', body)
       .then((response) => console.log(response.data))
       .catch((err) => console.log(err));
   };
+
   const login = (body) => {
     axios
       .post('http://localhost:5000/users/login', body)
-      .then((response) => {
-        console.log(response.data);
-      })
+      .then((response) => console.log(response.data))
       .catch((err) => console.log(err));
   };
 

@@ -6,7 +6,8 @@ export default function Login(props) {
 
   const loginUser = (e) => {
     e.preventDefault();
-    props.login({ email, password });
+    const user = { email: email, password: password };
+    props.login(user);
   };
   return (
     <div>

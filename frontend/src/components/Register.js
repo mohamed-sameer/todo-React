@@ -10,9 +10,9 @@ export default function Register(props) {
     const newUser = {
       email: email,
       password: password,
-      userName: userName,
+      username: userName,
     };
-    props.registerUSer(newUser);
+    props.registerUser(newUser);
   };
   return (
     <div>
