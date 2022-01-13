@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Task from './Task';
 import AddTask from './AddTask';
-import Register from './Register';
-import Login from './Login';
 
 export default function Todo(props) {
   const [tasks, setTasks] = useState([]);
@@ -63,33 +61,46 @@ export default function Todo(props) {
     );
   });
 
-  const registerUser = (body) => {
-    axios
-      .post('http://localhost:5000/users/register', body)
-      .then((response) => console.log(response.data))
-      .catch((err) => console.log(err));
-  };
-
-  const login = (body) => {
-    axios
-      .post('http://localhost:5000/users/login', body)
-      .then((response) => console.log(response.data))
-      .catch((err) => console.log(err));
-  };
-
   return (
     <div>
       <h1>My Tasks</h1>
       <AddTask addTask={addTask} />
-      <button onClick={() => getTasks()}>all</button>
-      <button onClick={deleteCompleted}>delete completed</button>
-      <button onClick={() => filterTasks(true)}>completed</button>
-      <button onClick={() => filterTasks(false)}>not completed</button>
+      <div
+        className="btn-group"
+        role="group"
+        aria-label="Basic outlined example"
+      >
+        <button
+          type="button"
+          className="btn btn-outline-primary"
+          onClick={() => getTasks()}
+        >
+          All
+        </button>
+        <button
+          type="button"
+          className="btn btn-outline-primary"
+          onClick={deleteCompleted}
+        >
+          delete completed
+        </button>
+        <button
+          type="button"
+          className="btn btn-outline-primary"
+          onClick={() => filterTasks(true)}
+        >
+          completed
+        </button>
+        <button
+          type="button"
+          className="btn btn-outline-primary"
+          onClick={() => filterTasks(false)}
+        >
+          not completed
+        </button>
+      </div>
       <hr />
       {task}
-
-      <Register registerUser={registerUser} />
-      <Login login={login} />
     </div>
   );
 }

@@ -14,13 +14,15 @@ module.exports = {
   },
   loginUser: (req, res) => {
     User.findOne({ email: req.body.email }, (err, user) => {
-      if (err) res.status(406).json({ message: err.message });
+      if (err) res.status(406).json({ message: err });
       else {
         if (!user) res.status(401).json({ message: 'email is not correct' });
         else {
           if (user.password === req.body.password)
-            res.status(200).json('logged in');
-          else res.status(401).json({ message: 'password is incorrect' });
+            res
+              .status(200)
+              .json({ message: 'logged in successfully', userInfo: user });
+          else res.status(402).json({ message: 'password is incorrect' });
         }
       }
     });
