@@ -46,6 +46,21 @@ export default function Login(props) {
           />
           <label htmlFor="floatingPassword">Password</label>
         </div>
+        {props.loginDetails.status !== null ? (
+          <div
+            className={`mt-3 alert ${
+              props.loginDetails.status !== 200
+                ? 'alert-danger'
+                : 'alert-success'
+            }`}
+            role="alert"
+          >
+            {props.loginDetails.message}
+          </div>
+        ) : (
+          ''
+        )}
+
         <div className="mt-3" align="center">
           <button
             className="btn btn-primary d-block"

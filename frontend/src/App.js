@@ -3,12 +3,16 @@ import axios from 'axios';
 import Register from './components/Register';
 import Login from './components/Login';
 import './App.css';
-import { Routes, Route, Link } from 'react-router-dom';
+import { Routes, Route, Link, Navigate } from 'react-router-dom';
 import Todo from './components/Todo';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [username, setUsername] = useState('');
+  const [loginMessage, setLoginMessage] = useState('');
+  const [loginStatus, setLoginStatus] = useState(null);
+
+  const loginDetails = { message: loginMessage, status: loginStatus };
   const registerUser = (body) => {
     axios
       .post('http://localhost:5000/users/register', body)
@@ -20,17 +24,25 @@ function App() {
     axios
       .post('http://localhost:5000/users/login', body)
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.status);
+        const username = response.data.userInfo.username;
+        setLoginStatus(response.status);
+        setLoginMessage(response.data.message);
         setIsLoggedIn(true);
-        setUsername(response.data.userInfo.username);
+        setUsername(username);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err);
+        setLoginStatus(err.response.status);
+        setLoginMessage(err.response.data.message);
+      });
   };
 
   const logout = () => {
     setIsLoggedIn(false);
     setUsername('');
   };
+
   return (
     <div className="App">
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
@@ -82,11 +94,24 @@ function App() {
       <h1>Welcome: {username}</h1>
       {/* <Todo /> */}
       <Routes>
-        <Route path="/" element={<Todo />} />
-        <Route path="login" element={<Login login={login} />} />
+        {/* protect routes */}
+        {isLoggedIn && <Route path="/" element={<Todo />} />}
+        {!isLoggedIn && (
+          <>
+            <Route
+              path="login"
+              element={<Login login={login} loginDetails={loginDetails} />}
+            />
+
+            <Route
+              path="register"
+              element={<Register registerUser={registerUser} />}
+            />
+          </>
+        )}
         <Route
-          path="register"
-          element={<Register registerUser={registerUser} />}
+          path="*"
+          element={<Navigate to={isLoggedIn ? '/' : '/login'} />}
         />
       </Routes>
     </div>
